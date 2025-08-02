@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>رؤى الذكاء الاصطناعي - مَسَـارِن</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      font-family: 'Cairo', sans-serif;
+      background-color: #f9f9f9;
+      margin: 0;
+      padding: 0;
+    }
+    section {
+      padding: 60px 20px;
+      text-align: center;
+    }
+    h2 {
+      font-size: 32px;
+      color: #1DBF73;
+      margin-bottom: 15px;
+    }
+    .desc {
+      font-size: 18px;
+      color: #666;
+      margin-bottom: 40px;
+    }
+    .select-container {
+      margin-bottom: 30px;
+    }
+    select {
+      font-size: 16px;
+      padding: 10px 15px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+    .alert-message {
+      color: #c0392b;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+    .circle-status {
+      margin: 30px auto;
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      background-color: #1DBF73;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 20px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+      transition: background 0.5s;
+    }
+    .grid-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      max-width: 1100px;
+      margin: 40px auto;
+    }
+    .card {
+      background: #fff;
+      padding: 25px;
+      border-radius: 15px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.05);
+    }
+    canvas {
+      max-width: 100%;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 15px;
+      text-align: center;
+    }
+    th, td {
+      border-bottom: 1px solid #ddd;
+      padding: 10px;
+    }
+    th {
+      background-color: #1DBF73;
+      color: white;
+    }
+    .map-placeholder {
+      height: 200px;
+      background: #eee;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #888;
+    }
+    
+  </style>
+</head>
+<body>
+  <section>
+    <h2>رؤى الذكاء الاصطناعي </h2>
+    <p class="desc">تابع الحالة الحالية والتنبؤات لحظيًا للمساعدة في اتخاذ القرار السريع</p>
+
+    <div class="select-container">
+      <select id="roadSelect" onchange="handleRoadChange()">
+        <option value="">اختر الطريق</option>
+        <option value="طريق الملك عبدالله">طريق الملك عبدالله</option>
+        <option value="طريق أبها الدائري">طريق أبها الدائري</option>
+        <option value="طريق الحزام">طريق الحزام</option>
+        <option value="طريق المطار">طريق المطار</option>
+        <option value="قريباً">🚧 طرق إضافية قريبًا</option>
+      </select>
+      <div class="alert-message" id="roadMessage"></div>
+    </div>
+
+    <div class="circle-status" id="roadStatus">جاري التحديث...</div>
+
+    <div class="grid-container">
+      <div class="card">
+        <h3>توزيع حالات التحذير</h3>
+        <canvas id="statusChart"></canvas>
+      </div>
+      <div class="card">
+        <h3>خريطة الطريق</h3>
+        <div class="map-placeholder">🗺️ خريطة الطريق التفاعلية قريبًا</div>
+      </div>
+    </div>
+
+    <div class="card" style="max-width: 1100px; margin: 40px auto;">
+      <h3>جدول التنبيهات الأخيرة</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>الوقت</th>
+            <th>الموقع</th>
+            <th>نوع التحذير</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>10:25 ص</td><td>طريق الحزام</td><td>🚧 حفرة طارئة</td></tr>
+          <tr><td>10:10 ص</td><td>أبها الدائري</td><td>⚠️ أمطار غزيرة</td></tr>
+          <tr><td>09:45 ص</td><td>طريق المطار</td><td>🚗 ازدحام مفاجئ</td></tr>
+          <tr><td>09:30 ص</td><td>طريق الملك عبدالله</td><td>🛠️ صيانة مجدولة</td></tr>
+          <tr><td>09:00 ص</td><td>أبها الدائري</td><td>🌫️ ضباب كثيف</td></tr>
+          <tr><td>08:30 ص</td><td>طريق الحزام</td><td>🚧 أعمال حفر</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <script>
+  const statusBox = document.getElementById('roadStatus');
+  const roadMessage = document.getElementById('roadMessage');
+  const tableBody = document.querySelector("tbody");
+
+  function setDefaultMessage() {
+    roadMessage.innerText = 'ℹ️ ملاحظة: القائمة تعرض أبرز الطرق فقط، لكن “مَسَـارِن” يراقب كل الطرق! التنبيهات تصــل مباشرة عند رصد أي حالة، حتى إن كان الطريق غير موجود بالقائمة';
+  }
+
+  function updateStatus() {
+    const statuses = [
+      { text: '✅ الحالة: الطريق سالك', color: '#1DBF73' },
+      { text: '⚠️ الحالة: ازدحام متوسط', color: '#f39c12' },
+      { text: '🚧 الحالة: أعمال صيانة', color: '#e74c3c' }
+    ];
+    const random = statuses[Math.floor(Math.random() * statuses.length)];
+    statusBox.innerText = random.text;
+    statusBox.style.backgroundColor = random.color;
+  }
+
+  function handleRoadChange() {
+    const value = document.getElementById('roadSelect').value;
+    if (value === 'قريباً') {
+      roadMessage.innerText = '🚧 سيتم تفعيل الرصد لهذا الطريق قريبًا';
+      statusBox.innerText = '⏳ قريبًا';
+      statusBox.style.backgroundColor = '#aaa';
+    } else {
+      setDefaultMessage();
+      updateStatus();
+    }
+  }
+
+  // تحديث مستمر للحالة إذا تم اختيار طريق
+  setInterval(() => {
+    const selected = document.getElementById('roadSelect').value;
+    if (selected && selected !== 'قريباً') updateStatus();
+  }, 5000);
+
+  // إظهار الرسالة الأساسية عند تحميل الصفحة
+  window.onload = () => {
+    setDefaultMessage();
+  };
+
+  // تحديث التنبيهات بشكل عشوائي لإضافة الواقعية
+  const warnings = [
+    { location: 'طريق المطار', type: '🚧 أعمال صيانة' },
+    { location: 'أبها الدائري', type: '🌫️ ضباب كثيف' },
+    { location: 'طريق الحزام', type: '🚗 ازدحام مفاجئ' },
+    { location: 'طريق الملك عبدالله', type: '⚠️ أمطار خفيفة' },
+    { location: 'طريق المطار', type: '🛠️ صيانة مجدولة' }
+  ];
+
+  function addRandomWarning() {
+    const now = new Date();
+    const time = now.toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' });
+    const randomWarning = warnings[Math.floor(Math.random() * warnings.length)];
+    const newRow = `<tr><td>${time}</td><td>${randomWarning.location}</td><td>${randomWarning.type}</td></tr>`;
+    tableBody.insertAdjacentHTML('afterbegin', newRow);
+  }
+
+  setInterval(addRandomWarning, 15000); // كل 15 ثانية
+
+
+    // رسم الرسم البياني
+    const ctx = document.getElementById('statusChart').getContext('2d');
+    new Chart(ctx, {
+      type: 'doughnut',
+      data: {
+        labels: ['🚧 صيانة', '⚠️ تحذير', '✅ جيد'],
+        datasets: [{
+          data: [3, 4, 8],
+          backgroundColor: ['#e74c3c', '#f39c12', '#1DBF73']
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { position: 'bottom' }
+        }
+      }
+    });
+  </script>
+</body>
+</html>

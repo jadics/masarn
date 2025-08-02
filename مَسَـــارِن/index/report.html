@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>عينك على الطريق - بلّغ عن حالة</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <style>
+    body {
+      font-family: 'Cairo', sans-serif;
+      background-color: #f4f4f4;
+      padding: 80px;
+      text-align: center;
+    }
+
+    form {
+      background: white;
+      padding: 60px;
+      border-radius: 30px;
+      max-width: 1000px;
+      margin: auto;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    input, textarea {
+      width: 100%;
+      margin-bottom: 15px;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+    }
+
+    button {
+      background-color: #1DBF73;
+      color: white;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #159a5a;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>📸 عينك على الطريق</h2>
+  <p>ساهم في تحسين طرقنا من خلال رفع بلاغ فوري عن أي حالة تشوه بصري تراها.</p>
+
+  <form onsubmit="return showAlert()">
+  <input type="text" placeholder="موقع البلاغ أو رابط الخريطة">
+  <textarea rows="5" placeholder="وصف الحالة"></textarea>
+  <input type="file" accept="image/*">
+  <button type="submit">إرسال البلاغ</button>
+</form>
+
+<script>
+  function showAlert() {
+    alert("تم إرسال البلاغ بنجاح. سيتم اتخاذ الإجراء المناسب في أسرع وقت. شكرًا لمساهمتك!");
+    return false; // يمنع الفورم من الإرسال الفعلي (للتجربة فقط)
+  }
+</script>
+<!-- عبارة توضيحية بعد الفورم -->
+<div style="background-color: #e8f8f2; color: #1DBF73; padding: 20px; margin: 30px auto; border-radius: 20px; max-width: 800px; font-size: 18px;">
+  يهدف "مَـسَـارِن" إلى تمكين أفراد المجتمع من الإبلاغ الفوري عن حالات التشوّه البصري في الطرق والأماكن العامة، بما يسهم في سرعة المعالجة وتحسين جودة البنية التحتية في منطقة عسير.
+</div>
+</body>
+</html>

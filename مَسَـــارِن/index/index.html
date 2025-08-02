@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>مَـسَـارِن</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      font-family: 'Cairo', sans-serif;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      scroll-behavior: smooth;
+      height: 100%;
+      background-color: #f9f9f9;
+    }
+
+    header {
+      background-color: #ffffffee;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 40px;
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    header .logos img {
+      height: 50px;
+      margin-left: 15px;
+    }
+
+    nav a {
+      margin-left: 25px;
+      color: #1a1a1a;
+      text-decoration: none;
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .hero {
+      background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.6)), url("images/aser.png") no-repeat center center/cover;
+      height: 100vh;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding-top: 100px;
+    }
+
+    .logo-title {
+      font-size: 64px;
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+
+    .tagline {
+      font-size: 28px;
+      font-weight: 500;
+      margin-bottom: 30px;
+    }
+
+    .video-section {
+      display: flex;
+      gap: 15px;
+      margin-top: 20px;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .video-btn, .updates-btn {
+      background-color: #1DBF73;
+      color: white;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 8px;
+      font-size: 18px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .video-btn:hover, .updates-btn:hover {
+      background-color: #159a5a;
+    }
+
+    #map-section {
+      height: 100vh;
+      background-color: #eef1f2;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      padding: 40px;
+    }
+
+    #map {
+      width: 90%;
+      height: 80%;
+      border-radius: 15px;
+      z-index: 0;
+    }
+
+footer {
+  background-color: #c7c7c7;
+  color: #eee;
+  padding: 30px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.footer-right img {
+  height: 60px;
+}
+
+.footer-left img {
+  height: 50px;
+}
+
+.footer-center {
+  text-align: center;
+  flex: 1;
+}
+
+.contact-info {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  font-size: 15px;
+  color: #ddd;
+  margin-bottom: 10px;
+}
+
+.contact-info img {
+  height: 18px;
+}
+
+.rights {
+  font-size: 13px;
+  color: #999;
+}
+
+    .contact-info {
+      display: flex;
+      align-items: center;
+      margin-top: 10px;
+      font-size: 14px;
+      color: #000;
+    }
+
+    .contact-info img {
+      height: 18px;
+      margin-left: 8px;
+    }
+
+    .rights {
+      text-align: center;
+      width: 100%;
+      margin-top: 15px;
+      font-size: 13px;
+      color: #000000;
+    }
+    nav a img {
+  vertical-align: middle;
+}
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+<div class="logos">
+  <img src="images/logoaser.png" alt="شعار منطقة عسير">
+  <img src="images/logo.png" alt="شعار مسارن النصي"> 
+</div>
+    
+    <nav>
+
+  <a href="#">الصفحة الرئيسية</a>
+  <a href="#about">من نحن</a>
+<a href="#vision">الرؤية</a>
+<a href="report.html" style="color: #1DBF73;">عينك على الطريق</a></nav>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="logo-title">مَـسَـارِن</div>
+    <div class="tagline">الذكاء يبدأ من قلب الطريق</div>
+    <div class="video-section">
+      <button class="updates-btn" onclick="document.getElementById('map-section').scrollIntoView({ behavior: 'smooth' })">
+        🛣️ انقر لرؤية المستجدات
+      </button>
+      <button class="video-btn" onclick="window.location.href='https://youtu.be/alQEIz5MCos'">
+        ▶️ شاهد الفيديو التعريفي
+      </button>
+    </div>
+  </section>
+
+  <!-- Map Section -->
+  <section id="map-section">
+    <h2 style="margin-bottom: 20px;">خريطة عسير التفاعلية</h2>
+    <div id="map"></div>
+<div id="ai-insights" style="margin-top: 20px; background: #fff; border-radius: 15px; padding: 40px; width: 90%; box-shadow: 0 0 10px rgba(0,0,0,0.1); font-size: 18px; color: #333; overflow-y: auto;">  <strong> رؤى الذكاء الاصطناعي المتوقعة خلال 3 ساعات القادمة:</strong>
+  <ul id="insights-list" style="margin-top: 20px; line-height: 1.8;">
+    <li> توقع زيادة في أعمال الصيانة في الطرق المرتبطة بطريق الملك عبدالله.</li>
+    <li> احتمالية أمطار متفرقة تؤثر على مناطق مرتفعة مثل السودة والنماص.</li>
+    <li> تحليل بيانات المرور يتوقع ازدحامًا خلال ساعة الذروة في أبها.</li>
+    <li> بلاغات مسبقة توحي بوجود أعمال طارئة لإصلاح حفرة في طريق الحزام.</li>
+    <li> الذكاء الاصطناعي يقترح إعادة توجيه السير للطريق البديل المؤقت في خميس مشيط.</li>
+  </ul>
+</div>
+  </section>
+   <!-- about Section -->
+<section id="about" style="padding: 80px 20px; background-color: #fff; text-align: center;">
+  <h2 style="font-size: 32px; color: #1DBF73; margin-bottom: 20px;">من نحن؟</h2>
+  <p style="font-size: 18px; max-width: 800px; margin: 0 auto; line-height: 1.8;">
+    "مَـسَـارِن" هو نظام وطني ذكي نشأ من هاكاثون "عسير تبتكر"، طُوّر بعقول شابة وطموحة لرفع جودة الطرق في المناطق الجبلية، ونؤمن بأن البنية التحتية الذكية هي أساس التطوير المستدام. اجتمعنا في هاكاثون “عسير تبتكر” لنبتكر نظامًا ذكيًا يعتمد على المجسّات الدقيقة والذكاء الاصطناعي لتحسين صيانة الطرق الجبلية، وتقليل التكاليف، ومنع التشوّهات البصرية قبل حدوثها.
+  </p>
+</section>
+<!-- Features Section (بعد الرؤية) -->
+<section id="features" style="padding: 80px 20px; background-color: #f4f4f4; text-align: center;">
+  <h2 style="font-size: 32px; color: #1DBF73; margin-bottom: 40px;">تعرّف على منظومة مَـسَـارِن</h2>
+  
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; max-width: 1100px; margin: auto;">
+    
+    <!-- Card 1 -->
+    <div style="background: white; padding: 30px; border-radius: 15px; box-shadow: 0 0 10px rgba(0,0,0,0.05);">
+      <h3 style="color: #1DBF73; margin-bottom: 15px;">ماذا يميزنا؟</h3>
+      <p style="font-size: 16px; margin-bottom: 20px;">مقارنة واضحة بين "مَـسَـارِن" والحلول التقليدية لرصد الطرق.</p>
+      <button onclick="location.href='features.html'" style="background-color: #1DBF73; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer;">اقرأ المزيد</button>
+    </div>
+
+    <!-- Card 2 -->
+    <div style="background: white; padding: 30px; border-radius: 15px; box-shadow: 0 0 10px rgba(0,0,0,0.05);">
+      <h3 style="color: #1DBF73; margin-bottom: 15px;">كيف يعمل النظام؟</h3>
+      <p style="font-size: 16px; margin-bottom: 20px;">شرح بصري مبسّط لطريقة عمل "مَـسَـارِن" من المجسات إلى التنبيه.</p>
+      <button onclick="location.href='how-it-works.html'" style="background-color: #1DBF73; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer;">اقرأ المزيد</button>
+    </div>
+
+    <!-- Card 3 -->
+    <div style="background: white; padding: 30px; border-radius: 15px; box-shadow: 0 0 10px rgba(0,0,0,0.05);">
+      <h3 style="color: #1DBF73; margin-bottom: 15px;">لمن صُمّم؟</h3>
+      <p style="font-size: 16px; margin-bottom: 20px;">جهات حكومية، بلديات، مقاولو صيانة... الكل يستفيد من مَـسَـارِن.</p>
+      <button onclick="location.href='audience.html'" style="background-color: #1DBF73; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer;">اقرأ المزيد</button>
+    </div>
+
+    <!-- Card 4 -->
+    <div style="background: white; padding: 30px; border-radius: 15px; box-shadow: 0 0 10px rgba(0,0,0,0.05);">
+      <h3 style="color: #1DBF73; margin-bottom: 15px;">رؤى الذكاء الاصطناعي</h3>
+      <p style="font-size: 16px; margin-bottom: 20px;">تحليلات تنبؤية لحالة الطرق والتغيرات المحتملة خلال الساعات القادمة.</p>
+      <button onclick="location.href='ai-insights.html'" style="background-color: #1DBF73; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer;">اقرأ المزيد</button>
+    </div>
+<!-- أهداف المشروع داخل نفس الكتلة -->
+<div style="background: white; padding: 40px; border-radius: 15px; box-shadow: 0 0 10px rgba(0,0,0,0.05); grid-column: span 4;">
+  <h3 style="color: #1DBF73; font-size: 28px; margin-bottom: 25px; text-align: center;">أهداف مَـسَـارِن</h3>
+  <ul style="list-style: none; padding: 0 20px; font-size: 18px; line-height: 2; text-align: right; direction: rtl;">
+    <li>- <strong>الرصد اللحظي:</strong> مراقبة دقيقة لحالة الطرق من الداخل قبل تفاقم المشكلات.</li>
+    <li>- <strong>خفض التكاليف:</strong> تقليل نفقات الصيانة السنوية بنسبة تصل إلى 40% عبر الصيانة الاستباقية.</li>
+    <li>- <strong>السلامة أولاً:</strong> خفض الحوادث الناتجة عن الانهيارات أو التشققات بنسبة تصل إلى 20%.</li>
+    <li>- <strong>رفع الكفاءة:</strong> توجيه فرق الصيانة استنادًا إلى بيانات دقيقة وتحذيرات ذكية.</li>
+    <li>- <strong>تمكين الجهات:</strong> توفير تقارير لحظية تدعم اتخاذ القرار المبني على بيانات.</li>
+  </ul>
+</div>
+  </div>
+
+</style>
+</style>
+</section>
+
+ <!-- vision Section -->
+<section id="vision" style="padding: 40px 20px; background-color: #fff; text-align: center;">
+  <h2 style="font-size: 32px; color: #1DBF73; margin-bottom: 20px;">رؤيتنا</h2>
+  <p style="font-size: 18px; max-width: 800px; margin: 0 auto; line-height: 1.8;">
+    أن تصبح "مَـسَـارِن" المنصة الرائدة في المنطقة لرصد الطرق الذكي، وتكون أداة أساسية في التخطيط والصيانة المستقبلية للبنية التحتية، وركيزة من ركائز المدن الذكية في المملكة وخارجها.
+  </p>
+</section>
+
+
+
+  <!-- Footer -->
+<footer>
+  <div class="footer-right">
+    <img src="images/logotext.png" alt="شعار نصي">
+  </div>
+
+  <div class="footer-center">
+    <div class="contact-info">
+  <img src="images/mail.png" alt="email icon">
+  <span><strong>للتواصل:</strong> jumanaaldurayhim@gmail.com</span>
+</div>
+    <div class="rights">
+      جميع الحقوق محفوظة © 2025 مَـسَـارِن
+    </div>
+  </div>
+
+  <div class="footer-left">
+    <img src="images/logophoto.png" alt="شعار رمزي">
+  </div>
+</footer>
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script>
+  var map = L.map('map').setView([18.2164, 42.5052], 8); // إحداثيات عسير
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; OpenStreetMap contributors'
+  }).addTo(map);
+
+  // دالة لإضافة نقطة دائرية بلون معين
+  function addCircle(lat, lng, color, message) {
+    L.circleMarker([lat, lng], {
+      radius: 5,
+      color: color,
+      fillColor: color,
+      fillOpacity: 0.9
+    }).addTo(map).bindPopup(message);
+  }
+
+  // 🔴 نقاط "حرج"
+  addCircle(18.24, 42.56, 'red', '🚨 حالة حرج: طريق مغلق جزئياً');
+  addCircle(18.19, 42.50, 'red', '🚨 حالة حرج: تصادم مروري');
+  addCircle(18.30, 42.60, 'red', '🚨 حالة حرج: أعمال صيانة');
+  addCircle(18.22, 42.53, 'red', '🚨 حالة حرج: تعطل حساسات المراقبة');
+
+  // 🟡 نقاط "تحذير"
+  addCircle(18.22, 42.52, 'orange', '⚠️ تحذير: زحام متوسط');
+  addCircle(18.25, 42.49, 'orange', '⚠️ تحذير: أمطار غزيرة');
+  addCircle(18.18, 42.55, 'orange', '⚠️ تحذير: تقاطع مزدحم');
+   addCircle(18.10, 42.52, 'orange', '⚠️ تحذير: تقاطع مزدحم');
+ addCircle(18.24, 42.42, 'orange', '⚠️ تحذير: شارع مزدحم');
+
+
+  // 🟢 نقاط "جيد"
+  addCircle(18.26, 42.54, 'green', '✅ الحالة: الطريق سالك');
+    addCircle(18.21, 42.43, 'green', '✅ الحالة: الطريق سالك');
+  addCircle(18.28, 42.51, 'green', '✅ الحالة: لا توجد عوائق');
+    addCircle(18.22, 42.57, 'green', '✅ الحالة: لا توجد عوائق');
+  addCircle(18.21, 42.48, 'green', '✅ الحالة: الطريق مفتوح بالكامل');
+</script>
+</body>
+</html>

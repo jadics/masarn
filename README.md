@@ -13,7 +13,7 @@
 
 - 🧩 [فتح النموذج التفاعلي على Figma](https://www.figma.com/design/fsSBzCtnrzuGVkuoyxHieY/hac.?node-id=339-2710)  
 
-- 🌐 [عرض الموقع التجريبي لنظام "مَـسَـارِن"](https://aser.ddpdyz20iath7.amplifyapp.com//)
+- 🌐 [عرض الموقع التجريبي لنظام "مَـسَـارِن"](https://aser.ddpdyz20iath7.amplifyapp.com)
 
 ---
 
